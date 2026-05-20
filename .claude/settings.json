@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "Bash(del \"c:\\\\Users\\\\JUSTIN\\\\Desktop\\\\Projet React\\\\lalesvpn\\\\src\\\\hooks\\\\useInView.ts\")",
+      "Bash(npm i *)",
+      "Bash(npm uninstall *)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const data=fs.readFileSync\\('./node_modules/world-atlas/countries-110m.json','utf8'\\); fs.writeFileSync\\('./src/assets/world-110m.json', data\\); console.log\\('done', fs.statSync\\('./src/assets/world-110m.json'\\).size, 'bytes'\\);\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const p='./node_modules/world-atlas/'; console.log\\(fs.readdirSync\\(p\\).join\\(', '\\)\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); fs.copyFileSync\\('c:/Users/JUSTIN/Desktop/Projet React/lalesvpn/node_modules/world-atlas/countries-110m.json', 'c:/Users/JUSTIN/Desktop/Projet React/lalesvpn/src/assets/world-110m.json'\\); console.log\\('copied', fs.statSync\\('c:/Users/JUSTIN/Desktop/Projet React/lalesvpn/src/assets/world-110m.json'\\).size, 'bytes'\\)\")",
+      "Bash(git init *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'grep -v \"Co-Authored-By: Claude\"' -- --all)",
+      "Bash(git commit *)"
+    ]
+  }
+}

@@ -1,7 +1,6 @@
 # LaslesVPN — Landing Page
 
-A pixel-faithful React implementation of the [LaslesVPN Figma design](https://www.figma.com/design/9PgUPbXQiq2blWwFoC9RyC/FREEBIES-Landingpage-LaslesVPN--Community-).
-
+A pixel-faithful React implementation of the LaslesVPN Landing Page.
 ![LaslesVPN preview](public/image.png)
 
 ## Tech Stack
