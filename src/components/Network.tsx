@@ -10,34 +10,32 @@ const EASE = [0.16, 1, 0.3, 1] as const
 const WIDTH  = 960
 const HEIGHT = 500
 
-type VpnMarker = { coordinates: [number, number] }
-
-const vpnMarkers: VpnMarker[] = [
-  { coordinates: [ -74.0,   40.7] }, // New York
-  { coordinates: [-118.2,   34.0] }, // Los Angeles
-  { coordinates: [ -79.4,   43.7] }, // Toronto
-  { coordinates: [ -46.6,  -23.5] }, // São Paulo
-  { coordinates: [  -0.1,   51.5] }, // London
-  { coordinates: [   2.3,   48.9] }, // Paris
-  { coordinates: [   4.9,   52.4] }, // Amsterdam
-  { coordinates: [   8.7,   50.1] }, // Frankfurt
-  { coordinates: [  28.0,  -26.0] }, // Johannesburg
-  { coordinates: [  55.3,   25.2] }, // Dubai
-  { coordinates: [  72.8,   19.1] }, // Mumbai
-  { coordinates: [ 103.8,    1.3] }, // Singapore
-  { coordinates: [ 126.9,   37.6] }, // Seoul
-  { coordinates: [ 139.7,   35.7] }, // Tokyo
-  { coordinates: [ 151.2,  -33.9] }, // Sydney
+// Bien répartis géographiquement — pas de cluster européen
+const vpnMarkers: [number, number][] = [
+  [ -122.4,  37.8],  // San Francisco
+  [  -73.9,  40.7],  // New York
+  [  -87.6,  41.9],  // Chicago
+  [  -43.2, -22.9],  // Rio de Janeiro
+  [   -3.7,  40.4],  // Madrid
+  [   13.4,  52.5],  // Berlin
+  [   37.6,  55.8],  // Moscou
+  [   31.2,  30.1],  // Le Caire
+  [   28.0, -26.2],  // Johannesburg
+  [   55.3,  25.2],  // Dubaï
+  [   72.8,  19.1],  // Mumbai
+  [  104.0,  30.6],  // Chengdu
+  [  139.7,  35.7],  // Tokyo
+  [  103.8,   1.3],  // Singapour
+  [  151.2, -33.9],  // Sydney
 ]
 
 export default function Network() {
-  const { paths, projectedMarkers } = useMemo(() => {
+  const { paths, markers } = useMemo(() => {
     const projection = geoNaturalEarth1()
       .scale(153)
       .translate([WIDTH / 2, HEIGHT / 2])
 
     const pathGenerator = geoPath(projection)
-
     const topology = worldData as unknown as Topology<Objects>
     const countries = feature(topology, topology.objects.countries)
 
@@ -46,12 +44,11 @@ export default function Network() {
       id: (f as any).id,
     }))
 
-    const projectedMarkers = vpnMarkers.map(({ coordinates }) => {
-      const [x, y] = projection(coordinates) ?? [0, 0]
-      return { x, y }
-    })
+    const markers = vpnMarkers
+      .map(coords => projection(coords))
+      .filter(Boolean) as [number, number][]
 
-    return { paths, projectedMarkers }
+    return { paths, markers }
   }, [])
 
   return (
@@ -81,38 +78,40 @@ export default function Network() {
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
             style={{ width: '100%', height: 'auto', display: 'block' }}
           >
-            {/* Country fills */}
+            {/* Océan */}
+            <rect width={WIDTH} height={HEIGHT} fill="#EEF2F7" />
+
+            {/* Continents */}
             {paths.map(({ d, id }) => (
               <path
                 key={id}
                 d={d}
-                fill="#DDE1EB"
+                fill="#C8CEDC"
                 stroke="#FFFFFF"
-                strokeWidth={0.5}
+                strokeWidth={0.7}
               />
             ))}
 
-            {/* VPN server markers */}
-            {projectedMarkers.map(({ x, y }, i) => (
+            {/* Marqueurs VPN */}
+            {markers.map(([x, y], i) => (
               <g key={i}>
-                {/* Pulsing ring */}
+                {/* Anneau pulsant */}
                 <motion.circle
-                  cx={x}
-                  cy={y}
-                  r={6}
+                  cx={x} cy={y} r={7}
                   fill="#F53855"
                   style={{ transformOrigin: `${x}px ${y}px` }}
-                  animate={{ scale: [1, 3.5], opacity: [0.5, 0] }}
+                  animate={{ scale: [1, 3.2], opacity: [0.45, 0] }}
                   transition={{
                     duration: 2.4,
                     ease: 'easeOut',
                     repeat: Infinity,
-                    delay: i * 0.2,
+                    delay: i * 0.22,
                   }}
                 />
-                {/* Solid dot */}
-                <circle cx={x} cy={y} r={4} fill="#F53855" />
-                <circle cx={x} cy={y} r={1.5} fill="white" />
+                {/* Point rouge */}
+                <circle cx={x} cy={y} r={4.5} fill="#F53855" />
+                {/* Centre blanc */}
+                <circle cx={x} cy={y} r={1.8} fill="white" />
               </g>
             ))}
           </svg>
